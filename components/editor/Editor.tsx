@@ -19,7 +19,15 @@ function Placeholder() {
   return <div className="editor-placeholder">Enter some rich text...</div>;
 }
 
-export function Editor() {
+interface EditorProps {
+
+  roomId: string;
+
+  currentUserType: UserType;
+
+}
+
+const Editor: React.FC<EditorProps> = ({ roomId, currentUserType }) => {
   const initialConfig = {
     namespace: 'Editor',
     nodes: [HeadingNode],
@@ -50,3 +58,5 @@ export function Editor() {
     </LexicalComposer>
   );
 }
+
+export default Editor;

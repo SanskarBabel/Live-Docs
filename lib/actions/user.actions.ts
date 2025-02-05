@@ -6,13 +6,28 @@ import { liveblocks } from "../liveblocks";
 
 export const getClerkUsers = async ({ userIds }: { userIds: string[] }) => {
     try {
-        const { data } = await clerkClient.users.getUserList({
+        const { data } = await (await clerkClient()).users.getUserList({
             emailAddress: userIds,
         });
 
-        const users = data.map((user) => ({
+        interface ClerkUser {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+            emailAddresses: { emailAddress: string }[];
+            imageUrl: string;
+        }
+
+        interface User {
+            id: string;
+            name: string;
+            email: string;
+            avatar: string;
+        }
+
+        const users: User[] = data.map((user: ClerkUser) => ({
             id: user.id,
-            name: `${user.firstName} ${user.lastName}`,
+            name: `${user.firstName ?? ''} ${user.lastName ?? ''}`,
             email: user.emailAddresses[0].emailAddress,
             avatar: user.imageUrl,
         }));
